@@ -1,6 +1,8 @@
 import Hero from "@/components/Hero";
 import { getProducts } from "@/lib/products";
 import AllProducts from "@/components/products/AllProducts";
+import PriceUp from "@/components/products/PriceUp";
+import PriceDown from "@/components/products/PriceDown";
 
 
 export default async function Home() {
@@ -15,6 +17,10 @@ export default async function Home() {
 
 
       <Hero />
+
+      <PriceUp products={products} />
+
+      <PriceDown products={products} />
 
       <AllProducts products={products} />
 

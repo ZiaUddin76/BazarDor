@@ -20,3 +20,26 @@ export async function getProducts(): Promise<Product[]> {
     return products;
 
 }
+
+
+
+export async function getProductsByCategory(
+    categorySlug: string
+): Promise<Product[]> {
+    "use cache";
+
+    cacheLife("minutes");
+
+    const res = await fetch(
+        `https://openapi.programming-hero.com/api/bazardor/products?category=${categorySlug}`
+    );
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch category products");
+    }
+
+    const products: Product[] = await res.json();
+
+    return products;
+
+}

@@ -4,9 +4,13 @@ import ProductCard from "./ProductCard";
 
 interface AllProductsProps {
     products: Product[];
+    showTitle?: boolean;
 }
 
-const AllProducts = ({ products }: AllProductsProps) => {
+const AllProducts = ({
+    products,
+    showTitle = true,
+}: AllProductsProps) => {
 
     const getUnitLabel = (unit: string) => {
         const units: Record<string, string> = {
@@ -23,12 +27,16 @@ const AllProducts = ({ products }: AllProductsProps) => {
 
     return (
         <section className="mx-auto w-full max-w-6xl py-10">
-            <h2 className="text-2xl font-bold text-gray-900">
-                সব পণ্য
-            </h2>
+            {
+                showTitle && (
+                    <h2 className="text-2xl font-bold text-gray-900">
+                        সব পণ্য
+                    </h2>
+                )
+            }
 
             <p className="mt-2 text-gray-600">
-                মোট {products.length.toLocaleString("bn-BD")} পণ্য দেখানো হচ্ছে
+                মোট {products.length.toLocaleString("bn-BD")}টি পণ্য দেখানো হচ্ছে
             </p>
 
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

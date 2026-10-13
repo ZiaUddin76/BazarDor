@@ -43,3 +43,20 @@ export async function getProductsByCategory(
     return products;
 
 }
+
+
+
+export async function getProductById(id: number) {
+    const res = await fetch(
+        `https://openapi.programming-hero.com/api/bazardor/products/${id}`
+    );
+
+    if(!res.ok) {
+        throw new Error("Failed to fetch product");
+    }
+
+    const data = await res.json();
+
+    return data;
+
+}

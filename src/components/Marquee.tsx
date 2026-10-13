@@ -16,6 +16,19 @@ interface IProduct {
 }
 
 
+const getUnitLabel = (unit: string) => {
+    const units: Record<string, string> = {
+        kg: "কেজি",
+        litre: "লিটার",
+        dozen: "ডজন",
+        piece: "পিস",
+        gram: "গ্রাম",
+    };
+
+    return units[unit.toLowerCase()] ?? unit;
+};
+
+
 const NewsMarquee = () => {
 
 
@@ -59,9 +72,15 @@ const NewsMarquee = () => {
                             text-sm sm:text-base'>
                             <span>{product.image}</span>
                             <span>{product.nameBn}</span>
-                            <span>{product.today} টাকা/{product.unit}</span>
+                            <span>
+                                {product.today.toLocaleString("bn-BD")} টাকা/
+                                {getUnitLabel(product.unit)}
+                            </span>
                             <span className={isUp ? "text-red-600" : "text-green-600"}>
-                                {isUp ? "▲" : "▼"} {product.change.pct}%
+                                {isUp ? "▲" : "▼"}{" "}
+                                {product.change.pct.toLocaleString("bn-BD", {
+                                    maximumFractionDigits: 1,
+                                })}%
                             </span>
                             <span className="ml-4 text-gray-300">|</span>
                         </div>

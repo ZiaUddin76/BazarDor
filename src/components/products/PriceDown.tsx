@@ -39,6 +39,7 @@ const PriceDown = ({ products }: PriceDownProps) => {
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {topRisers.map((product) => (
                     <ProductCard
+                        id={product.id}
                         key={product.id}
                         name={product.nameBn}
                         emoji={product.image}

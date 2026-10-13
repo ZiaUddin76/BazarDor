@@ -26,7 +26,8 @@ const AllProducts = ({
 
 
     return (
-        <section className="mx-auto w-full max-w-6xl py-10">
+        <section className="mx-auto w-full max-w-6xl py-10"
+        id="products-list">
             {
                 showTitle && (
                     <h2 className="text-2xl font-bold text-gray-900">
@@ -42,6 +43,7 @@ const AllProducts = ({
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {products.map((product) => (
                     <ProductCard
+                        id={product.id}
                         key={product.id}
                         name={product.nameBn}
                         emoji={product.image}

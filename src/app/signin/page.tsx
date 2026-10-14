@@ -2,12 +2,13 @@
 
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
+import toast from "react-hot-toast";
 import { FaGithub } from "react-icons/fa";
 
 const SignInForm = () => {
-    const router = useRouter();
+
     const searchParams = useSearchParams();
 
     const callbackURL = searchParams.get("callbackURL");
@@ -31,13 +32,17 @@ const SignInForm = () => {
                 password,
             });
 
+
             if (result.error) {
-                setError(
-                    result.error.message ||
-                    "সাইন ইন করা যায়নি। আবার চেষ্টা করুন।"
-                );
+                const errorMessage =
+                    "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়, আবার চেষ্টা করুন।";
+
+                setError(errorMessage);
+                toast.error(errorMessage);
                 return;
             }
+
+            toast.success("সফলভাবে সাইন ইন হয়েছে");
 
             // console.log("Redirect destination:", callbackURL);
 
@@ -49,7 +54,7 @@ const SignInForm = () => {
 
             window.location.assign(destination);
         } catch {
-            setError("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
+            toast.error("সাইন ইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
         } finally {
             setIsLoading(false);
         }

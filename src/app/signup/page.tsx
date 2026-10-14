@@ -1,15 +1,36 @@
+
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const SignUpPage = () => {
-    const router = useRouter();
-
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    const handleGoogleSignUp = async () => {
+        try {
+            await authClient.signIn.social({
+                provider: "google",
+                callbackURL: "/",
+            });
+        } catch {
+            toast.error("Google দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
+        }
+    };
+
+    const handleGitHubSignUp = async () => {
+        try {
+            await authClient.signIn.social({
+                provider: "github",
+                callbackURL: "/",
+            });
+        } catch {
+            toast.error("GitHub দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
+        }
+    };
 
     const handleSubmit = async (
         e: React.FormEvent<HTMLFormElement>
@@ -25,7 +46,10 @@ const SignUpPage = () => {
         const confirmPassword = formData.get("confirmPassword") as string;
 
         if (password !== confirmPassword) {
-            setError("দুটি পাসওয়ার্ড মিলছে না।");
+            const errorMessage = "দুটি পাসওয়ার্ড মিলছে না।";
+
+            setError(errorMessage);
+            toast.error(errorMessage);
             return;
         }
 
@@ -40,17 +64,22 @@ const SignUpPage = () => {
             });
 
             if (result.error) {
-                setError(
+                const errorMessage =
                     result.error.message ||
-                    "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।"
-                );
+                    "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।";
+
+                setError(errorMessage);
+                toast.error(errorMessage);
                 return;
             }
 
-            router.push("/");
-            router.refresh();
+            window.location.assign("/");
         } catch {
-            setError("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+            const errorMessage =
+                "কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।";
+
+            setError(errorMessage);
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -58,8 +87,6 @@ const SignUpPage = () => {
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center bg-[#F4F4F2] px-4 py-10">
-
-            {/* Heading */}
             <div className="mb-8 text-center">
                 <h2 className="mt-4 text-2xl font-bold text-gray-900">
                     অ্যাকাউন্ট তৈরি করুন
@@ -70,12 +97,8 @@ const SignUpPage = () => {
                 </p>
             </div>
 
-            {/* Signup Card */}
             <div className="w-full max-w-lg rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-
                 <form onSubmit={handleSubmit} className="space-y-5">
-
-                    {/* Error Message */}
                     {error && (
                         <p
                             role="alert"
@@ -85,7 +108,6 @@ const SignUpPage = () => {
                         </p>
                     )}
 
-                    {/* Name */}
                     <div>
                         <label
                             htmlFor="name"
@@ -105,7 +127,6 @@ const SignUpPage = () => {
                         />
                     </div>
 
-                    {/* Email */}
                     <div>
                         <label
                             htmlFor="email"
@@ -125,7 +146,6 @@ const SignUpPage = () => {
                         />
                     </div>
 
-                    {/* Password */}
                     <div>
                         <label
                             htmlFor="password"
@@ -146,7 +166,6 @@ const SignUpPage = () => {
                         />
                     </div>
 
-                    {/* Confirm Password */}
                     <div>
                         <label
                             htmlFor="confirmPassword"
@@ -167,7 +186,6 @@ const SignUpPage = () => {
                         />
                     </div>
 
-                    {/* Signup Button */}
                     <button
                         type="submit"
                         disabled={loading}
@@ -179,17 +197,16 @@ const SignUpPage = () => {
                     </button>
                 </form>
 
-                {/* Divider */}
                 <div className="my-6 flex items-center gap-4">
                     <div className="h-px flex-1 bg-gray-200" />
                     <span className="text-sm text-gray-500">অথবা</span>
                     <div className="h-px flex-1 bg-gray-200" />
                 </div>
 
-                {/* Social Signup Buttons — UI Only for Now */}
                 <div className="grid grid-cols-2 gap-3">
                     <button
                         type="button"
+                        onClick={handleGoogleSignUp}
                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
                         <span className="text-lg font-bold">G</span>
@@ -198,6 +215,7 @@ const SignUpPage = () => {
 
                     <button
                         type="button"
+                        onClick={handleGitHubSignUp}
                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
                         <svg
@@ -212,7 +230,6 @@ const SignUpPage = () => {
                     </button>
                 </div>
 
-                {/* Signin Link */}
                 <p className="mt-6 text-center text-sm text-gray-600">
                     অ্যাকাউন্ট আছে?{" "}
                     <Link
@@ -224,7 +241,6 @@ const SignUpPage = () => {
                 </p>
             </div>
 
-            {/* Back to Home */}
             <Link
                 href="/"
                 className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-green-700"

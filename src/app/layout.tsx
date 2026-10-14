@@ -37,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
 
         {children}
-        <Toaster />
+        <Toaster position="top-right"/>
         
 
         <Footer />

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { authClient } from "@/lib/auth-client";
@@ -8,6 +9,20 @@ import toast from "react-hot-toast";
 import { FaGithub } from "react-icons/fa";
 
 const SignInForm = () => {
+
+    const handleGoogleSignIn = async () => {
+        await authClient.signIn.social({
+            provider:"google",
+            callbackURL: "/",
+        });
+    };
+    const handleGithubSignIn = async () => {
+        await authClient.signIn.social({
+            provider:"github",
+            callbackURL: "/",
+        });
+    };
+
 
     const searchParams = useSearchParams();
 
@@ -32,7 +47,6 @@ const SignInForm = () => {
                 password,
             });
 
-
             if (result.error) {
                 const errorMessage =
                     "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়, আবার চেষ্টা করুন।";
@@ -41,8 +55,6 @@ const SignInForm = () => {
                 toast.error(errorMessage);
                 return;
             }
-
-            toast.success("সফলভাবে সাইন ইন হয়েছে");
 
             // console.log("Redirect destination:", callbackURL);
 
@@ -142,6 +154,7 @@ const SignInForm = () => {
                 <div className="grid grid-cols-2 gap-3">
                     <button
                         type="button"
+                        onClick={handleGoogleSignIn}
                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
                         <span className="text-lg font-bold">G</span>
@@ -150,6 +163,7 @@ const SignInForm = () => {
 
                     <button
                         type="button"
+                        onClick={handleGithubSignIn}
                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
                         <FaGithub className="h-5 w-5" />

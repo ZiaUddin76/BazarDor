@@ -1,6 +1,9 @@
+import { auth } from "@/lib/auth";
 import { getProductById } from "@/lib/products";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 interface ProductDetailsPageProps {
@@ -9,10 +12,28 @@ interface ProductDetailsPageProps {
     }>;
 }
 
+
+
+
 const ProductDetailsContent = async ({
     params,
 }: ProductDetailsPageProps) => {
+
+
     const { id } = await params;
+
+
+    const requestHeaders = await headers();
+
+    const session = await auth.api.getSession({
+        headers: requestHeaders,
+    });
+
+    if (!session) {
+        redirect(`/signin?callbackURL=${encodeURIComponent(`/products/${id}`)}`);
+    }
+
+
 
     const product = await getProductById(Number(id));
 

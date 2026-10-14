@@ -1,21 +1,66 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const SignUpPage = () => {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const router = useRouter();
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const handleSubmit = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
         e.preventDefault();
+        setError("");
 
+        const formData = new FormData(e.currentTarget);
 
+        const name = formData.get("name") as string;
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        const confirmPassword = formData.get("confirmPassword") as string;
+
+        if (password !== confirmPassword) {
+            setError("দুটি পাসওয়ার্ড মিলছে না।");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const result = await authClient.signUp.email({
+                name,
+                email,
+                password,
+                callbackURL: "/",
+            });
+
+            if (result.error) {
+                setError(
+                    result.error.message ||
+                    "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।"
+                );
+                return;
+            }
+
+            router.push("/");
+            router.refresh();
+        } catch {
+            setError("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center bg-[#F4F4F2] px-4 py-10">
 
-            {/* Headings outside the white card */}
+            {/* Heading */}
             <div className="mb-8 text-center">
-
                 <h2 className="mt-4 text-2xl font-bold text-gray-900">
                     অ্যাকাউন্ট তৈরি করুন
                 </h2>
@@ -25,10 +70,21 @@ const SignUpPage = () => {
                 </p>
             </div>
 
-            {/* White signup card */}
+            {/* Signup Card */}
             <div className="w-full max-w-lg rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
 
                 <form onSubmit={handleSubmit} className="space-y-5">
+
+                    {/* Error Message */}
+                    {error && (
+                        <p
+                            role="alert"
+                            className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600"
+                        >
+                            {error}
+                        </p>
+                    )}
+
                     {/* Name */}
                     <div>
                         <label
@@ -111,12 +167,15 @@ const SignUpPage = () => {
                         />
                     </div>
 
-                    {/* Signup button */}
+                    {/* Signup Button */}
                     <button
                         type="submit"
-                        className="cursor-pointer w-full rounded-lg bg-green-600 px-4 py-3 font-semibold text-white transition hover:bg-green-700"
+                        disabled={loading}
+                        className="w-full cursor-pointer rounded-lg bg-green-600 px-4 py-3 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        অ্যাকাউন্ট তৈরি করুন
+                        {loading
+                            ? "অ্যাকাউন্ট তৈরি হচ্ছে..."
+                            : "অ্যাকাউন্ট তৈরি করুন"}
                     </button>
                 </form>
 
@@ -127,11 +186,11 @@ const SignUpPage = () => {
                     <div className="h-px flex-1 bg-gray-200" />
                 </div>
 
-                {/* Social signup buttons */}
+                {/* Social Signup Buttons — UI Only for Now */}
                 <div className="grid grid-cols-2 gap-3">
                     <button
                         type="button"
-                        className="cursor-pointer flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
+                        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
                         <span className="text-lg font-bold">G</span>
                         Google দিয়ে চালিয়ে যান
@@ -139,12 +198,12 @@ const SignUpPage = () => {
 
                     <button
                         type="button"
-                        className="cursor-pointer flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
+                        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
                         <svg
                             aria-hidden="true"
                             viewBox="0 0 24 24"
-                            className="h-5 w-5 fill-current"
+                            className="h-5 w-5 shrink-0 fill-current"
                         >
                             <path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.53v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.63 1.21 3.27.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.53 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.95 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.53.23 2.67.11 2.95.72.78 1.15 1.78 1.15 3 0 4.3-2.61 5.25-5.1 5.53.4.35.76 1.03.76 2.08V22c0 .29.2.63.76.52A11.1 11.1 0 0 0 12 .9Z" />
                         </svg>
@@ -153,7 +212,7 @@ const SignUpPage = () => {
                     </button>
                 </div>
 
-                {/* Sign in link */}
+                {/* Signin Link */}
                 <p className="mt-6 text-center text-sm text-gray-600">
                     অ্যাকাউন্ট আছে?{" "}
                     <Link
@@ -165,7 +224,6 @@ const SignUpPage = () => {
                 </p>
             </div>
 
-            
             {/* Back to Home */}
             <Link
                 href="/"
@@ -174,8 +232,6 @@ const SignUpPage = () => {
                 <span aria-hidden="true">←</span>
                 হোম পেজে ফিরে যান
             </Link>
-            
-
         </main>
     );
 };

@@ -11,6 +11,8 @@ interface ProductDetailsPageProps {
     }>;
 }
 
+
+
 const ProductDetailsContent = async ({
     params,
 }: ProductDetailsPageProps) => {
@@ -45,19 +47,28 @@ const ProductDetailsContent = async ({
         notFound();
     }
 
+
     // Convert product units to Bengali
+    const unitMap: Record<string, string> = {
+        kg: "কেজি",
+        kilogram: "কেজি",
+        liter: "লিটার",
+        litre: "লিটার",
+        piece: "পিস",
+        pieces: "পিস",
+        gram: "গ্রাম",
+        dozen: "ডজন",
+        packet: "প্যাকেট",
+        pack: "প্যাকেট",
+        bottle: "বোতল",
+        pound: "পাউন্ড",
+        lb: "পাউন্ড",
+        ton: "টন",
+    };
+
     const unitBn =
-        product.unit === "kg"
-            ? "কেজি"
-            : product.unit === "liter"
-              ? "লিটার"
-              : product.unit === "piece"
-                ? "পিস"
-                : product.unit === "gram"
-                  ? "গ্রাম"
-                  : product.unit === "dozen"
-                    ? "ডজন"
-                    : product.unit;
+        unitMap[product.unit.toLowerCase()] ?? product.unit;
+
 
     return (
         <main className="mx-auto w-full max-w-6xl px-4 py-8">
@@ -112,13 +123,13 @@ const ProductDetailsContent = async ({
                     <p className="mt-3 text-sm text-gray-600">
                         {product.change.dir === "up"
                             ? `গতকালের তুলনায় আজ দাম বেড়েছে · ${(
-                                  product.today - product.yesterday
-                              ).toLocaleString("bn-BD")} টাকা`
+                                product.today - product.yesterday
+                            ).toLocaleString("bn-BD")} টাকা`
                             : product.change.dir === "down"
-                              ? `গতকালের তুলনায় আজ দাম কমেছে · ${(
+                                ? `গতকালের তুলনায় আজ দাম কমেছে · ${(
                                     product.yesterday - product.today
                                 ).toLocaleString("bn-BD")} টাকা`
-                              : "গতকালের তুলনায় আজ দাম অপরিবর্তিত"}
+                                : "গতকালের তুলনায় আজ দাম অপরিবর্তিত"}
                     </p>
                 </div>
 
@@ -138,19 +149,18 @@ const ProductDetailsContent = async ({
 
                     {/* Price change percentage with arrows */}
                     <p
-                        className={`mt-3 inline-block rounded-full px-3 py-1 text-sm font-semibold ${
-                            product.change.dir === "up"
+                        className={`mt-3 inline-block rounded-full px-3 py-1 text-sm font-semibold ${product.change.dir === "up"
                                 ? "bg-red-100 text-red-600"
                                 : product.change.dir === "down"
-                                  ? "bg-green-100 text-green-600"
-                                  : "bg-gray-200 text-gray-500"
-                        }`}
+                                    ? "bg-green-100 text-green-600"
+                                    : "bg-gray-200 text-gray-500"
+                            }`}
                     >
                         {product.change.dir === "up"
                             ? "▲ "
                             : product.change.dir === "down"
-                              ? "▼ "
-                              : ""}
+                                ? "▼ "
+                                : ""}
                         {Math.abs(product.change.pct).toLocaleString("bn-BD")}%
                     </p>
                 </div>
@@ -230,11 +240,10 @@ const ProductDetailsContent = async ({
                                 <p className="mt-2 text-sm text-gray-600">
                                     {item.title === "গড় দাম"
                                         ? item.market
-                                        : `সবচেয়ে ${
-                                              item.title === "সর্বনিম্ন দাম"
-                                                  ? "কম"
-                                                  : "বেশি"
-                                          } দামের বাজার: ${item.market}`}
+                                        : `সবচেয়ে ${item.title === "সর্বনিম্ন দাম"
+                                            ? "কম"
+                                            : "বেশি"
+                                        } দামের বাজার: ${item.market}`}
                                 </p>
                             </div>
                         ));
@@ -285,11 +294,10 @@ const ProductDetailsContent = async ({
                                     return (
                                         <tr
                                             key={`${market.market}-${index}`}
-                                            className={`border-b border-gray-100 transition-colors last:border-0 ${
-                                                index % 2 === 0
+                                            className={`border-b border-gray-100 transition-colors last:border-0 ${index % 2 === 0
                                                     ? "bg-white"
                                                     : "bg-[#F4F4F2]"
-                                            } hover:bg-gray-100`}
+                                                } hover:bg-gray-100`}
                                         >
                                             <td className="px-4 py-4 font-medium text-gray-900">
                                                 {market.market}

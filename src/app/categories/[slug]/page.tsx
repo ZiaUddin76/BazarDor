@@ -1,5 +1,6 @@
 
 import CategoryProductSection from "@/components/products/CategoryProductSection";
+import ProductSkeleton from "@/components/products/ProductSkeleton";
 import { getProductsByCategory } from "@/lib/products";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -16,7 +17,7 @@ const CategoryContent = async ({ params }: CategoryPageProps) => {
 
     const products = await getProductsByCategory(slug);
 
-    if(products.length === 0) {
+    if (products.length === 0) {
         notFound();
     }
 
@@ -52,15 +53,27 @@ const CategoryContent = async ({ params }: CategoryPageProps) => {
 
 const CategoryPage = ({ params }: CategoryPageProps) => {
     return (
+
         <Suspense
             fallback={
                 <main className="mx-auto w-full max-w-6xl px-4 py-8">
-                    <p className="text-gray-500">পণ্য লোড হচ্ছে...</p>
+                    {/* Category header skeleton */}
+                    <div className="mb-8 flex animate-pulse items-center gap-5 rounded-2xl border border-gray-200 bg-white p-5 sm:p-7">
+                        <div className="h-24 w-24 shrink-0 rounded-xl bg-gray-200 sm:h-32 sm:w-32" />
+
+                        <div className="flex-1 space-y-3">
+                            <div className="h-7 w-2/3 rounded bg-gray-200" />
+                            <div className="h-4 w-1/2 rounded bg-gray-100" />
+                        </div>
+                    </div>
+
+                    <ProductSkeleton count={6} />
                 </main>
             }
         >
             <CategoryContent params={params} />
         </Suspense>
+
     );
 };
 

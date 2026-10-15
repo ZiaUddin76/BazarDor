@@ -6,6 +6,7 @@ import NavLinks from "@/components/NavLinks";
 import NewsMarquee from "@/components/Marquee";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
+import SignInSuccessToast from "@/components/SignInSuccessToast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
 
         {children}
+        <SignInSuccessToast />
         <Toaster position="top-right"/>
         
 

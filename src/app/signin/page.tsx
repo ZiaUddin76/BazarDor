@@ -1,6 +1,7 @@
 
 "use client";
 
+import RedirectToast from "@/components/RedirectToast";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -11,15 +12,21 @@ import { FaGithub } from "react-icons/fa";
 const SignInForm = () => {
 
     const handleGoogleSignIn = async () => {
+
+        sessionStorage.setItem("signin-success", "true");
+
         await authClient.signIn.social({
-            provider:"google",
-            callbackURL: "/",
+            provider: "google",
+            callbackURL: callbackURL || "/",
         });
     };
     const handleGithubSignIn = async () => {
+
+        sessionStorage.setItem("signin-success", "true");
+
         await authClient.signIn.social({
-            provider:"github",
-            callbackURL: "/",
+            provider: "github",
+            callbackURL: callbackURL || "/",
         });
     };
 
@@ -45,6 +52,7 @@ const SignInForm = () => {
             const result = await authClient.signIn.email({
                 email,
                 password,
+                callbackURL: callbackURL || "/",
             });
 
             if (result.error) {
@@ -64,6 +72,7 @@ const SignInForm = () => {
                     ? callbackURL
                     : "/";
 
+            sessionStorage.setItem("signin-success", "true");
             window.location.assign(destination);
         } catch {
             toast.error("সাইন ইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
@@ -203,6 +212,7 @@ const SignInPage = () => {
                 </main>
             }
         >
+            <RedirectToast />
             <SignInForm />
         </Suspense>
     );

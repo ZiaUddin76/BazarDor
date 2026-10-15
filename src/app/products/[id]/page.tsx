@@ -30,14 +30,18 @@ const ProductDetailsContent = async ({
     });
 
     if (!session) {
-        redirect(`/signin?callbackURL=${encodeURIComponent(`/products/${id}`)}`);
+        redirect(
+            `/signin?reason=auth-required&callbackURL=${encodeURIComponent(
+                `/products/${id}`
+            )}`
+        );
     }
 
 
 
     const product = await getProductById(Number(id));
 
-    if(!product) {
+    if (!product) {
         notFound();
     }
 

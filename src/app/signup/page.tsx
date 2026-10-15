@@ -11,23 +11,29 @@ const SignUpPage = () => {
     const [error, setError] = useState("");
 
     const handleGoogleSignUp = async () => {
+        sessionStorage.setItem("signup-success", "true");
+
         try {
             await authClient.signIn.social({
                 provider: "google",
                 callbackURL: "/",
             });
         } catch {
+            sessionStorage.removeItem("signup-success");
             toast.error("Google দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
         }
     };
 
     const handleGitHubSignUp = async () => {
+        sessionStorage.setItem("signup-success", "true");
+
         try {
             await authClient.signIn.social({
                 provider: "github",
                 callbackURL: "/",
             });
         } catch {
+            sessionStorage.removeItem("signup-success");
             toast.error("GitHub দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
         }
     };
@@ -73,6 +79,7 @@ const SignUpPage = () => {
                 return;
             }
 
+            sessionStorage.setItem("signup-success", "true");
             window.location.assign("/");
         } catch {
             const errorMessage =

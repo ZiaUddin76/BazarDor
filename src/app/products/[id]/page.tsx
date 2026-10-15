@@ -250,7 +250,7 @@ const ProductDetailsContent = async ({
 
                 {/* Market price table */}
                 <div className="overflow-x-auto rounded-xl border border-gray-200">
-                    <table className="w-full min-w-[650px] text-sm">
+                    <table className="w-full min-w-162.5 text-sm">
                         <thead>
                             <tr className="border-b border-gray-200 bg-gray-50 text-gray-600">
                                 <th className="rounded-l-lg px-4 py-3 text-left font-semibold">

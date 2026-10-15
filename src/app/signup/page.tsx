@@ -5,6 +5,8 @@ import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { FaArrowLeft, FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 const SignUpPage = () => {
     const [loading, setLoading] = useState(false);
@@ -216,7 +218,7 @@ const SignUpPage = () => {
                         onClick={handleGoogleSignUp}
                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
-                        <span className="text-lg font-bold">G</span>
+                        <FcGoogle className="h-5 w-5 shrink-0" />
                         Google দিয়ে চালিয়ে যান
                     </button>
 
@@ -225,13 +227,7 @@ const SignUpPage = () => {
                         onClick={handleGitHubSignUp}
                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
-                        <svg
-                            aria-hidden="true"
-                            viewBox="0 0 24 24"
-                            className="h-5 w-5 shrink-0 fill-current"
-                        >
-                            <path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.53v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.63 1.21 3.27.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.53 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.95 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.53.23 2.67.11 2.95.72.78 1.15 1.78 1.15 3 0 4.3-2.61 5.25-5.1 5.53.4.35.76 1.03.76 2.08V22c0 .29.2.63.76.52A11.1 11.1 0 0 0 12 .9Z" />
-                        </svg>
+                        <FaGithub className="h-5 w-5" />
 
                         GitHub দিয়ে চালিয়ে যান
                     </button>
@@ -252,7 +248,7 @@ const SignUpPage = () => {
                 href="/"
                 className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-green-700"
             >
-                <span aria-hidden="true">←</span>
+                <FaArrowLeft className="h-4 w-4" aria-hidden="true" />
                 হোম পেজে ফিরে যান
             </Link>
         </main>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import DateDisplay from './DateDisplay';
 import Image from 'next/image';
+import { FaArrowDown } from 'react-icons/fa';
 
 const Hero = () => {
     return (
@@ -34,7 +35,7 @@ const Hero = () => {
                         className="mt-6 inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-3 font-semibold text-white transition-colors hover:bg-green-700"
                     >
                         সব পণ্য দেখুন
-                        <span aria-hidden="true">↓</span>
+                        <FaArrowDown className="h-4 w-4" aria-hidden="true" />
                     </Link>
                 </div>
 

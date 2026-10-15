@@ -7,7 +7,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
 import toast from "react-hot-toast";
-import { FaGithub } from "react-icons/fa";
+import { FaArrowLeft, FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 const SignInForm = () => {
 
@@ -166,7 +167,7 @@ const SignInForm = () => {
                         onClick={handleGoogleSignIn}
                         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 sm:text-base"
                     >
-                        <span className="text-lg font-bold">G</span>
+                        <FcGoogle className="h-5 w-5 shrink-0" />
                         Google দিয়ে চালিয়ে যান
                     </button>
 
@@ -196,7 +197,7 @@ const SignInForm = () => {
                 href="/"
                 className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-green-700"
             >
-                <span aria-hidden="true">←</span>
+                <FaArrowLeft className="h-4 w-4" aria-hidden="true" />
                 হোম পেজে ফিরে যান
             </Link>
         </main>

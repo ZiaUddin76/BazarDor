@@ -7,6 +7,8 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { FaSignOutAlt, FaUser } from "react-icons/fa";
+import { IoChevronDown } from "react-icons/io5";
 
 const Navbar = () => {
     const { data: session, isPending } = authClient.useSession();
@@ -126,20 +128,10 @@ const Navbar = () => {
                                 </span>
 
                                 {/* Down arrow */}
-                                <svg
+                                <IoChevronDown
                                     className={`h-4 w-4 shrink-0 text-gray-500 transition-transform ${dropdownOpen ? "rotate-180" : ""
                                         }`}
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M5.22 7.22a.75.75 0 011.06 0L10 10.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 8.28a.75.75 0 010-1.06z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
+                                />
                             </button>
 
                             {/* Dropdown menu */}
@@ -165,21 +157,7 @@ const Navbar = () => {
                                         }
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-100"
                                     >
-                                        <svg
-                                            className="h-4 w-4 text-gray-500"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            strokeWidth={1.8}
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.1a7.5 7.5 0 0115 0"
-                                            />
-                                        </svg>
+                                        <FaUser className="h-4 w-4 text-gray-500" />
 
                                         আমার প্রোফাইল
                                     </Link>
@@ -188,23 +166,9 @@ const Navbar = () => {
                                     <button
                                         type="button"
                                         onClick={handleSignOut}
-                                        className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+                                        className="cursor-pointer flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
                                     >
-                                        <svg
-                                            className="h-4 w-4"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            strokeWidth={1.8}
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 15l3-3m0 0l-3-3m3 3H9"
-                                            />
-                                        </svg>
+                                        <FaSignOutAlt className="h-4 w-4" />
 
                                         সাইন আউট
                                     </button>

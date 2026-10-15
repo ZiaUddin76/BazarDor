@@ -1,6 +1,7 @@
 
 import CategoryProductSection from "@/components/products/CategoryProductSection";
 import { getProductsByCategory } from "@/lib/products";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 
@@ -14,6 +15,10 @@ const CategoryContent = async ({ params }: CategoryPageProps) => {
     const { slug } = await params;
 
     const products = await getProductsByCategory(slug);
+
+    if(products.length === 0) {
+        notFound();
+    }
 
     const categoryIcon = products[0]?.categoryIcon ?? "🛒";
     const categoryName = products[0]?.categoryNameBn ?? slug;

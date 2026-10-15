@@ -3,7 +3,7 @@ import { getProductById } from "@/lib/products";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
 interface ProductDetailsPageProps {
@@ -36,6 +36,10 @@ const ProductDetailsContent = async ({
 
 
     const product = await getProductById(Number(id));
+
+    if(!product) {
+        notFound();
+    }
 
     return (
         <main className="mx-auto w-full max-w-6xl px-4 py-8">
